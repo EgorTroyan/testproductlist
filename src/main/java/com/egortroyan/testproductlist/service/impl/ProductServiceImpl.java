@@ -2,6 +2,7 @@ package com.egortroyan.testproductlist.service.impl;
 
 import com.egortroyan.testproductlist.repository.ProductRepo;
 import com.egortroyan.testproductlist.repository.entity.ProductEntity;
+import com.egortroyan.testproductlist.response.Response;
 import com.egortroyan.testproductlist.service.ProductService;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addNewProduct(ProductEntity product) {
+    public Response addNewProduct(ProductEntity product) {
         ProductEntity pf = productRepo.findByName(product.getName());
-        if(pf == null){
+        if(pf != null){
+            return new Response("Такой продукт уже существует");
+        } else {
             productRepo.save(product);
+            return new Response("Продукт добавлен");
         }
     }
 

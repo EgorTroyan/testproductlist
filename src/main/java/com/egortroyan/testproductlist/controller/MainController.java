@@ -2,9 +2,9 @@ package com.egortroyan.testproductlist.controller;
 
 import com.egortroyan.testproductlist.repository.entity.ProductEntity;
 import com.egortroyan.testproductlist.repository.entity.ProductListEntity;
+import com.egortroyan.testproductlist.response.Response;
 import com.egortroyan.testproductlist.service.ProductListService;
 import com.egortroyan.testproductlist.service.ProductService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,27 +27,25 @@ public class MainController {
 
     @PostMapping("/api/addnewproduct")
     public ResponseEntity<Object> addProduct(@RequestBody ProductEntity product){
-        productService.addNewProduct(product);
-        return new ResponseEntity<Object> (HttpStatus.OK);
+        Response response = productService.addNewProduct(product);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/api/addnewproductlist")
     public ResponseEntity<Object> addProductList(@RequestBody ProductListEntity productList){
-        productListService.addNewProductList(productList);
-        return new ResponseEntity<Object> (HttpStatus.OK);
+        Response response = productListService.addNewProductList(productList);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/api/addproducttolist")
     public ResponseEntity<Object> addProductToList(@RequestParam(name = "product") String productName, @RequestParam(name = "list") String listName){
-        productListService.addProductToList(productName,listName);
-        return new ResponseEntity<Object> (HttpStatus.OK);
+        Response response = productListService.addProductToList(productName,listName);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/api/getproducts")
     public ResponseEntity<Object> getProducts(){
-        //System.out.println("пришел запрос");
         List<ProductEntity> list = productService.getProducts();
-        //System.out.println("список получен");
         return ResponseEntity.ok(list);
     }
 

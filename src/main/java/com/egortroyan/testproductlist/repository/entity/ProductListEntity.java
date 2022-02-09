@@ -1,12 +1,12 @@
 package com.egortroyan.testproductlist.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name="list")
+@Table(name="list", indexes = {@Index(name = "list_name_indx", columnList = "name")})
 public class ProductListEntity {
 
     @Id

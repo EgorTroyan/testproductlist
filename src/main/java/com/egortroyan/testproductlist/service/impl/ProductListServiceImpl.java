@@ -3,13 +3,13 @@ package com.egortroyan.testproductlist.service.impl;
 import com.egortroyan.testproductlist.repository.ProductListRepo;
 import com.egortroyan.testproductlist.repository.entity.ProductEntity;
 import com.egortroyan.testproductlist.repository.entity.ProductListEntity;
+import com.egortroyan.testproductlist.response.Response;
 import com.egortroyan.testproductlist.service.ProductListService;
 import com.egortroyan.testproductlist.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductListServiceImpl implements ProductListService {
@@ -25,10 +25,13 @@ public class ProductListServiceImpl implements ProductListService {
 
 
     @Override
-    public void addNewProductList(ProductListEntity productList) {
+    public Response addNewProductList(ProductListEntity productList) {
         ProductListEntity fpl = productListRepo.findByName(productList.getName());
-        if (fpl == null){
+        if (fpl != null){
+            return new Response("Такой список уже существует");
+        } else {
             productListRepo.save(productList);
+            return new Response("Новый список добавлен");
         }
     }
 
@@ -38,10 +41,20 @@ public class ProductListServiceImpl implements ProductListService {
     }
 
     @Override
-    public void addProductToList(String productName, String listName) {
+    public Response addProductToList(String productName, String listName) {
+        listName = listName.replaceAll("[|]","");
         ProductListEntity productList = productListRepo.findByName(listName);
-        productList.addProduct(productService.findProduct(productName));
+        if(productList == null){
+            return new Response("Указано неверное название списка");
+        }
+        productName = productName.replaceAll("[|]","");
+        ProductEntity product = productService.findProduct(productName);
+        if(product == null){
+            return new Response("Указано неверное наименование продукта");
+        }
+        productList.addProduct(product);
         productListRepo.save(productList);
+        return new Response("Продукт " + product.getName() + " добавлен в список " + productList.getName());
     }
 
     @Override
