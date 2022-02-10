@@ -10,4 +10,5 @@ public interface ProductListService {
     ProductListEntity findProductList(String name);
     Response addProductToList(String productName, String listName);
     List<ProductListEntity> getLists();
+    ProductListEntity getListById(long id);
 }

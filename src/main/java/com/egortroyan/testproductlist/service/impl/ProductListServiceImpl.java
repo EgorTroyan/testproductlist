@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductListServiceImpl implements ProductListService {
@@ -63,5 +64,17 @@ public class ProductListServiceImpl implements ProductListService {
         Iterable<ProductListEntity> it = productListRepo.findAll();
         it.forEach(list::add);
         return list;
+    }
+
+    @Override
+    public ProductListEntity getListById(long id) {
+        Optional<ProductListEntity> optional = productListRepo.findById(id);
+        ProductListEntity productList;
+        if(optional.isPresent()) {
+            productList = optional.get();
+        } else {
+            return null;
+        }
+        return productList;
     }
 }

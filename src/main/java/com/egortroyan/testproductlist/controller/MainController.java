@@ -54,4 +54,10 @@ public class MainController {
         List<ProductListEntity> list = productListService.getLists();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/api/getproductlist")
+    public ResponseEntity<Object> getProductsList(@RequestParam(name = "id") long id){
+        ProductListEntity list = productListService.getListById(id);
+        return ResponseEntity.ok(list);
+    }
 }

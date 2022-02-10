@@ -62,6 +62,15 @@ class TestproductlistApplicationTests {
 	}
 
 	@Test
+	void getListById() throws Exception {
+		this.mockMvc.perform(get("/api/getproductlist")
+						.param("id", "4"))
+				.andDo(print())
+				.andExpect(content()
+						.string(containsString("\"id\":4")));
+	}
+
+	@Test
 	void addProductTest() throws Exception {
 		ProductEntity product = new ProductEntity("Item44", "Desc", 666);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
